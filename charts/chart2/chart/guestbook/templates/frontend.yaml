@@ -13,7 +13,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: phico/frontend:1.0
+      - image: phico/frontend:1.1
         imagePullPolicy: Always
         name: frontend
         ports:

@@ -93,10 +93,25 @@ https://helm.sh/docs/topics/charts/
 
 ![chart-structure](images/chart-structure.png)
 
+
 # helm release and release revision.
 Helm supports release concept including release the same chart but with different K8s object names, for example: test, pre-prod, prod.   
 
 In case we did a change only in single yaml file that we can update only this file and not do the new whole release - it is called **release revision**.
+
+# basic commands
+| Action| Command|
+|----------|----------|
+| Install a release | helm install [release] [chart] |
+| Upgrade to a release revision| helm upgrade [release] [chart] |
+| Rollback to a release revision | helm rollback [release] [revision] |
+| Print release history | helm history [release] |
+| Display release status | helm status [release] |
+| Show details of a release | helm get all [release] |
+| Uninstall a release | helm uninstall [release] |
+| List releases | helm list |
+
+# install, upgrade, rollback
 
 ## chart1
 
@@ -114,18 +129,62 @@ Open in web browser http://localhost:30007/ to see the app.
 
 ![chart1-app](images/chart1-app.png)
 
-# basic commands
-| Action| Command|
-|----------|----------|
-| Install a release | helm install [release] [chart] |
-| Upgrade to a release revision| helm upgrade [release] [chart] |
-| Rollback to a release revision | helm rollback [release] [revision] |
-| Print release history | helm history [release] |
-| Display release status | helm status [release] |
-| Show details of a release | helm get all [release] |
-| Uninstall a release | helm uninstall [release] |
-| List releases | helm list |
+Next we can use the following command to see release details:
 
+```
+helm get manifest demoguestbook
+```
+
+## chart2
+
+[chart2](charts/chart2/chart/guestbook)
+
+Here we deploy the same chart but with different application. The change was only in the application and not in the chart.
+*appVersion* and *description* from *Chart.yaml* are set to 1.1 but *version* of the chart stays the same 0.1.0.   
+In *frontend.yaml* we refer to new image *phico/frontend:1.1*.
+
+```
+helm upgrade demoguestbook guestbook
+```
+
+![chart2-app](images/chart2-app.png)
+
+## rollback to revision 1 of the release
+
+```
+helm rollback demoguestbook 1
+```
+
+![rollback.png](images/rollback.png)
+
+### history
+
+```
+helm history demoguestbook
+```
+
+![helm-history](images/helm-history.png)
+
+## chart 3
+
+[chart3](charts/chart3/chart/guestbook)
+
+chart 3 adds back-end and database.
+
+*version* field in main *Chart.yaml* is updated to 1.1.0 because there are changes in infrastructure.
+
+```
+helm upgrade demoguestbook guestbook
+```
+![chart3-app](images/chart3-app.png)
+
+Next we can check status and history:
+
+![chart3-history](images/chart3-history.png)
+
+and we can open the new app: http://localhost:31705
+
+![app-20](images/app-20.png)
 
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
