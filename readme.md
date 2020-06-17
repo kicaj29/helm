@@ -2,7 +2,7 @@
 
 **Packaging**
 
-> With kubectl you do not install application as atomic set of kubernetes objects. Rather you deploy each object (yaml) separately. Also these objects might have dependencies between each other and order of installation might be important. Helm allows to group all kuberentes objects (yaml files) in one package and install the whole package.
+> With kubectl you do not install application as atomic set of kubernetes objects. Rather you deploy each object (yaml) separately. Also these objects might have dependencies between each other and order of installation might be important. Helm allows to group all kuberentes objects (yaml files) in one package and install the whole package. kubectl does not support rollbacks but helm supports it.
 
 **Versioning**
 
@@ -52,6 +52,8 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 ```
 ![install-official-repo](images/install-official-repo.png)
 
+## install helm chart
+
 Next we can install sample chart available in the official repository.
 
 ```
@@ -69,7 +71,63 @@ Next install mysql client https://dev.mysql.com/downloads/workbench/ and connect
 ![connect-to-mysql](images/connect-to-mysql.png)
 >NOTE: it was mandatory to run port forwarding to be able connect to the mysql!
 
+## uninstall helm chart
+
+```
+helm uninstall demo-mysql
+```
+
+![uninstall-chart](images/uninstall-chart.png)
+
+## helm variables
+
+```
+helm env
+```
+
+![helm-env](images/helm-env.png)
+
+# building helm charts
+
+https://helm.sh/docs/topics/charts/
+
+![chart-structure](images/chart-structure.png)
+
+# helm release and release revision.
+Helm supports release concept including release the same chart but with different K8s object names, for example: test, pre-prod, prod.   
+
+In case we did a change only in single yaml file that we can update only this file and not do the new whole release - it is called **release revision**.
+
+## chart1
+
+[chart1](charts/chart1/chart/guestbook)
+
+We refer to local chart and not chart from official helm repostory.
+
+```
+helm install demoguestbook guestbook
+helm uninstall demoguestbook
+```
+![install-char1](images/install-char1.png)
+
+Open in web browser http://localhost:30007/ to see the app.
+
+![chart1-app](images/chart1-app.png)
+
+# basic commands
+| Action| Command|
+|----------|----------|
+| Install a release | helm install [release] [chart] |
+| Upgrade to a release revision| helm upgrade [release] [chart] |
+| Rollback to a release revision | helm rollback [release] [revision] |
+| Print release history | helm history [release] |
+| Display release status | helm status [release] |
+| Show details of a release | helm get all [release] |
+| Uninstall a release | helm uninstall [release] |
+| List releases | helm list |
+
 
 # links
-https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files
-https://github.com/phcollignon/helm3
+https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
+https://github.com/phcollignon/helm3   
+https://github.com/helm/charts
