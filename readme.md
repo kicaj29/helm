@@ -197,6 +197,7 @@ and we can open the new app: http://localhost:31705
 [chart4](charts/chart4/chart/guestbook)
 
 First we have to install ingress controller
+https://kubernetes.github.io/ingress-nginx/deploy/#using-helm
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install release-ingress ingress-nginx/ingress-nginx
