@@ -167,6 +167,8 @@ helm history demoguestbook
 
 ## chart 3
 
+Chart 3 contains classic example with front-end, back-end and database.
+
 [chart3](charts/chart3/chart/guestbook)
 
 chart 3 adds back-end and database.

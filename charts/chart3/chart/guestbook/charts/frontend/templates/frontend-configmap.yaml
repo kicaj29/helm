@@ -4,4 +4,5 @@ metadata:
   name: frontend-config
 data:
   guestbook-name: "MyPopRock Festival 2.0"
-  backend-uri: "http://backend.minikube.local/guestbook"
+  # it is address of node port used by the backend service, web browser will send requests to this address
+  backend-uri: "http://localhost:31111/guestbook"
