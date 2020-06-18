@@ -188,7 +188,49 @@ and we can open the new app: http://localhost:31705
 
 ![app-20](images/app-20.png)
 
+## chart 4 - INGRESS controller
+
+>NOTE: before we start we have to install previous release because upgrade is not possible.
+
+![upgrade-not-possible](images/upgrade-not-possible.png)
+
+[chart4](charts/chart4/chart/guestbook)
+
+First we have to install ingress controller
+```
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install release-ingress ingress-nginx/ingress-nginx
+```
+
+After this we can see that nginx server is running:
+
+![ingress-nginx-empty](images/ingress-nginx-empty.png)
+
+Next we can release a package that uses ingress controller.
+
+```
+helm install demoguestbook guestbook
+```
+
+After this we have to add entries to *C:\Windows\System32\drivers\etc\hosts*
+to have mapping between DNS names and localhost address.
+
+```txt
+127.0.0.1 frontend.local
+127.0.0.1 backend.local
+```
+
+This names are also used in [ingress.yaml](charts/chart4/chart/guestbook/charts/frontend/templates/ingress.yaml).
+
+Finally we can open the UI in web browser:
+
+![app-frontend.local](images/app-frontend.local.png)
+
+
+
+
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
 https://github.com/phcollignon/helm3   
+https://www.youtube.com/watch?v=sHUSiM8jqbA (ingress controller installation)
 https://github.com/helm/charts
