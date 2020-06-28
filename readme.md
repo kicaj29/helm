@@ -23,7 +23,7 @@
 
 **Packaging**
 
-> With kubectl you do not install application as atomic set of kubernetes objects. Rather you deploy each object (yaml) separately. Also these objects might have dependencies between each other and order of installation might be important. Helm allows to group all kuberentes objects (yaml files) in one package and install the whole package. kubectl does not support rollbacks but helm supports it.
+> With kubectl you do not install application as atomic set of kubernetes objects. Rather you deploy each object (yaml) separately. Also these objects might have dependencies between each other and order of installation might be important. Helm allows to group all kuberentes objects (yaml files) in one package and install the whole package. kubectl does not support rollbacks but helm supports it. Additionally to this helm supports out of the box replacing placeholders like: build number, env. prefix.
 
 **Versioning**
 
@@ -249,6 +249,47 @@ Finally we can open the UI in web browser:
 ![app-frontend.local](images/app-frontend.local.png)
 
 
+# Customizing charts with helm templates
+
+One of the reason to use customizing charts is it have possibility to generate K8s object names based on a release name. For example: dev-fronted, test-frontend, preprod-frontend, prod-frontend.   
+There is alternative option to install different releases in different namespaces or different clusters but well designed helm chart should support such function to be able install it always without any name conflicts.
+
+Helm template engine uses **Go Template** engine https://golang.org/pkg/text/template/ .
+
+![helm-template-engine](images/helm-template-engine.png)
+
+Use the following command to read generated manifest file:
+```
+helm get manifest [release name]
+```
+
+## Testing custom templates
+
+### Static
+```
+helm template [chart]
+```
+- works without K8s cluster
+- static release name
+
+### Dynamic
+```
+helm install [release] [chart] --debug -dry-run
+```
+- real helm install but without commit
+- can generate a release-name
+
+## Data sources for values
+
+- values.yaml
+- other-file.yaml: ```helm install -f file```
+- variables: ```helm install --set foo=bar```
+- hierarchically organized
+- chart data: ```name: {{.Chart.Name}})``` (first letter of property is upper case)
+- release data: ```name: {{.Release.Name}}```, ```name: {{.Release.IsInstall}}``` etc.
+- K8s data: ```annotations: K8s{{.Capabilities.KubeVersion}}```
+- file data: ```annotations: data:{{.Files.Get conf.ini}}```
+- template data: ```annotations: tpl:{{.Template.Name}}```
 
 
 # links
