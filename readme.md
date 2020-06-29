@@ -138,6 +138,8 @@ In case we did a change only in single yaml file that we can update only this fi
 
 [chart1](charts/chart1/chart/guestbook)
 
+>NOTE: template properties do not support dash -
+
 We refer to local chart and not chart from official helm repostory.
 
 ```
@@ -211,7 +213,7 @@ and we can open the new app: http://localhost:31705
 
 ## chart 4 - INGRESS controller
 
->NOTE: before we start we have to install previous release because upgrade is not possible.
+>NOTE: before we start we have to uninstall previous release because upgrade is not possible.
 
 ![upgrade-not-possible](images/upgrade-not-possible.png)
 
@@ -291,6 +293,9 @@ helm install [release] [chart] --debug -dry-run
 - file data: ```annotations: data:{{.Files.Get conf.ini}}```
 - template data: ```annotations: tpl:{{.Template.Name}}```
 
+## chart 5 - custom values
+
+[chart5](charts/chart5-customizing-charts/chart/guestbook)
 
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
