@@ -17,6 +17,13 @@
     + [history](#history)
   * [chart 3](#chart-3)
   * [chart 4 - INGRESS controller](#chart-4---ingress-controller)
+- [Customizing charts with helm templates](#customizing-charts-with-helm-templates)
+  * [Testing custom templates](#testing-custom-templates)
+    + [Static](#static)
+    + [Dynamic](#dynamic)
+  * [Data sources for values](#data-sources-for-values)
+  * [Functions and pipelines](#functions-and-pipelines)
+  * [chart 5 - custom values](#chart-5---custom-values)
 - [links](#links)
 
 # why helm (v3)
@@ -292,6 +299,23 @@ helm install [release] [chart] --debug -dry-run
 - K8s data: ```annotations: K8s{{.Capabilities.KubeVersion}}```
 - file data: ```annotations: data:{{.Files.Get conf.ini}}```
 - template data: ```annotations: tpl:{{.Template.Name}}```
+
+## Functions and pipelines
+
+Some of basics:
+
+| Function | Pipeline |
+|----------|----------|
+| default default_value value | value \| default default_value |
+| quote value | value \| quote |
+| upper value | value \| upper |
+| trunc value 63| value \| trunc 63 |
+| trimSuffix "-" value | value \| trimSuffix "-" |
+| b64enc value | value \| b64enc |
+| randAlphaNum 10 | value \| randAlphaNum 10 |
+| toYaml value | value \| toYaml |
+| printf format value ... | list value ... \| join "-" |
+
 
 ## chart 5 - custom values
 
