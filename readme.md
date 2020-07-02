@@ -19,7 +19,7 @@
   * [chart 4 - INGRESS controller](#chart-4---ingress-controller)
 - [Customizing charts with helm templates](#customizing-charts-with-helm-templates)
   * [Testing custom templates](#testing-custom-templates)
-    + [Static](#static)
+    + [Static](#static)  
     + [Dynamic](#dynamic)
   * [Data sources for values](#data-sources-for-values)
   * [Functions and pipelines](#functions-and-pipelines)
@@ -1402,6 +1402,19 @@ type: library
 ## chart 5 - custom values
 
 [chart5](charts/chart5-customizing-charts/chart/guestbook)
+
+This chart show simple usage of custom values. It does not fully work because backend chart uses not working connection string to mongodb.
+The connection string is not correct because not mongodb has dynamic name.
+
+![not-working-backend](images/not-working-backend.png)
+
+This problem is solved in chart 6.
+
+## chart 6 - logic with building connection string to mongodb
+
+[chart6](charts/chart6-customizing-charts-fixed-mongodb/chart/guestbook)
+
+This chart solves problem that occurred in chart 5 - incorrect connection string to mongodb. 
 
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
