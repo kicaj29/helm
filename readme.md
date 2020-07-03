@@ -100,10 +100,10 @@
     + [Abstract charts - library](#abstract-charts---library-2)
   * [chart 5 - custom values](#chart-5---custom-values-2)
   * [chart 6 - logic with building connection string to mongodb](#chart-6---logic-with-building-connection-string-to-mongodb)
+  * [chart 7 - installing DEV and TEST environment](#chart-7---installing-dev-and-test-environment)
 - [links](#links-2)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 
 # why helm (v3)
