@@ -1486,6 +1486,88 @@ This problem is solved in chart 6.
 
 This chart solves problem that occurred in chart 5 - incorrect connection string to mongodb. 
 
+## chart 7 - installing DEV and TEST environment
+
+[chart7](charts/chart7-DEV-and-TEST-environment/chart/guestbook)
+
+Some important points:
+* This chart shows how to generate app URL based on release name.
+* It contains one ingress definition.
+* This chart contains example how to [iterate through array](charts/chart7-DEV-and-TEST-environment/chart/guestbook/templates/ingress.yaml).
+* It shows how to override values from values.yaml by parent chart (sections backend and frontend from [values.yaml](charts/chart7-DEV-and-TEST-environment/chart/guestbook/values.yaml))
+
+>NOTE: the following example requires adding additional entries in *C:\Windows\System32\drivers\etc\hosts* ```127.0.0.1 dev.frontend.local <br /> 127.0.0.1 dev.backend.local <br /> 127.0.0.1 test.frontend.local <br /> 127.0.0.1 test.backend.local```
+
+```ps
+helm install dev guestbook --set frontend.config.guestbook_name=DEV
+helm install test guestbook --set frontend.config.guestbook_name=TEST
+```
+
+Sample execution:
+```
+PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install dev guestbook --set frontend.config.guestbook_name=DEV
+NAME: dev
+LAST DEPLOYED: Fri Jul  3 21:14:48 2020
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Congratulations ! You installed guestbook chart sucessfully.
+Release name is dev
+
+You can access the Guestbook application at the following urls :
+  http://dev.frontend.local
+  http://dev.backend.local
+Have fun !
+PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install test guestbook --set frontend.config.guestbook_name=TEST
+NAME: test
+LAST DEPLOYED: Fri Jul  3 21:14:59 2020
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Congratulations ! You installed guestbook chart sucessfully.
+Release name is test
+
+You can access the Guestbook application at the following urls :
+  http://test.frontend.local
+  http://test.backend.local
+Have fun !
+PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> kubectl get pods
+NAME                                                        READY   STATUS    RESTARTS   AGE
+dev-backend-78995fd9f5-gcn4c                                0/1     Error     2          41s
+dev-database-86587b7845-8vrwq                               1/1     Running   0          41s
+dev-frontend-749bd48bcf-hkjfz                               1/1     Running   0          41s
+ingress-release-ingress-nginx-controller-784ffc969d-gtqzh   1/1     Running   0          15d
+test-backend-5b7cbcd488-zdhz8                               1/1     Running   1          30s
+test-database-69d589bc8-kq9hh                               1/1     Running   0          30s
+test-frontend-869cfcd845-hpl6t                              1/1     Running   0          30s
+PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart>
+```
+> :warning: From some reason there is an issue with backend pod from DEV env. There was raised question about it: https://disqus.com/by/disqus_pJ1gDaYRml/
+
+Error from the dev backend pod:
+
+```ps
+Guestbook API listening on port 3000!
+/home/node/app/node_modules/mongodb/lib/topologies/server.js:240
+            throw err;
+            ^
+
+MongoError: Authentication failed.
+    at Function._getError (/home/node/app/node_modules/mongodb-core/lib/auth/scram.js:125:14)
+    at sendAuthCommand (/home/node/app/node_modules/mongodb-core/lib/auth/scram.js:175:31)
+    at Connection.messageHandler (/home/node/app/node_modules/mongodb-core/lib/connection/connect.js:334:5)
+    at emitTwo (events.js:126:13)
+    at Connection.emit (events.js:214:7)
+    at processMessage (/home/node/app/node_modules/mongodb-core/lib/connection/connection.js:364:10)
+    at Socket.<anonymous> (/home/node/app/node_modules/mongodb-core/lib/connection/connection.js:533:15)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+```
+
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
 https://github.com/phcollignon/helm3   
