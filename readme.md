@@ -1568,6 +1568,100 @@ MongoError: Authentication failed.
     at Socket.emit (events.js:211:7)
 ```
 
+# Managing dependencies
+## Packaging charts
+There is dedicated command for this. It takes version from yaml file and appends it to the archive name.
+
+```
+helm package [chart_name]
+```
+## Publishing charts in helm repository
+
+[Chartmuseum](https://github.com/helm/chartmuseum) is HTTP server that is dedicated helm repository.   
+
+Helm repository also support signing charts:
+```ps
+helm package --sign
+helm verify chart.tgz
+helm install --verify
+```
+
+### Example how to package and publish
+
+[chart8-pack-publish](charts/chart8-pack-publish/chart/guestbook/dist)
+
+```ps
+PS C:\Windows\system32> move C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\charts C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist
+PS C:\Windows\system32> move C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\charts\* C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist
+PS C:\Windows\system32> cd C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist
+PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist> ls
+
+
+    Directory: C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----         7/6/2020   7:53 AM                backend
+d-----         7/6/2020   7:53 AM                database
+d-----         7/6/2020   7:53 AM                frontend
+
+
+PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist> helm package backend database frontend
+Successfully packaged chart and saved it to: C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist\backend-1.2.2.tgz
+Successfully packaged chart and saved it to: C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist\database-1.2.2.tgz
+Successfully packaged chart and saved it to: C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist\frontend-1.2.2.tgz
+PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist> helm repo index .
+PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist> ls
+
+
+    Directory: C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----         7/6/2020   7:53 AM                backend
+d-----         7/6/2020   7:53 AM                database
+d-----         7/6/2020   7:53 AM                frontend
+-a----         7/6/2020   7:57 AM           1256 backend-1.2.2.tgz
+-a----         7/6/2020   7:57 AM           1221 database-1.2.2.tgz
+-a----         7/6/2020   7:57 AM           1157 frontend-1.2.2.tgz
+-a----         7/6/2020   7:58 AM           1068 index.yaml
+
+
+PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist>
+```
+
+## Configuring helm client to work with repositories
+
+Helm maintains a list of repositories. Sample execution:
+
+```
+PS C:\GitHub\kicaj29\helm> helm repo list
+NAME            URL
+stable          https://kubernetes-charts.storage.googleapis.com
+ingress-nginx   https://kubernetes.github.io/ingress-nginx
+```
+
+To add repository execute the following command:
+```
+helm repo add [repo name] [address]
+helm repo add myrepo http://myserver.org/charts
+```
+To remove repo from the client:
+```
+helm repo remove myrepo
+```
+
+By default after installation helm is not connected to any repository. Usually one of the first steps is to add official helm 3 repository:
+
+```
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+```
+
+# Using existing helm chart
+
+
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
 https://github.com/phcollignon/helm3   
