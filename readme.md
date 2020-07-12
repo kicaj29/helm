@@ -101,6 +101,13 @@
   * [chart 5 - custom values](#chart-5---custom-values-2)
   * [chart 6 - logic with building connection string to mongodb](#chart-6---logic-with-building-connection-string-to-mongodb)
   * [chart 7 - installing DEV and TEST environment](#chart-7---installing-dev-and-test-environment)
+- [Managing dependencies](#managing-dependencies)
+  * [Packaging charts](#packaging-charts)
+  * [Publishing charts in helm repository](#publishing-charts-in-helm-repository)
+    + [Example how to package charts](#example-how-to-package-charts)
+    + [Example how to publish charts](#example-how-to-publish-charts)
+  * [Configuring helm client to work with repositories](#configuring-helm-client-to-work-with-repositories)
+- [Using existing helm chart](#using-existing-helm-chart)
 - [links](#links-2)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -1586,7 +1593,7 @@ helm verify chart.tgz
 helm install --verify
 ```
 
-### Example how to package and publish
+### Example how to package charts
 
 [chart8-pack-publish](charts/chart8-pack-publish/chart/guestbook/dist)
 
@@ -1632,6 +1639,25 @@ d-----         7/6/2020   7:53 AM                frontend
 PS C:\GitHub\kicaj29\helm\charts\chart8-pack-publish\chart\guestbook\dist>
 ```
 
+### Example how to publish charts
+
+First run locally https://chartmuseum.com/
+
+```
+PS C:\Users\48506> docker run --rm -it -p 8888:8080 -v C:/helmchartswindows:/charts -e DEBUG=true -e STORAGE=local -e STORAGE_LOCAL_ROOTDIR=/charts chartmuseum/chartmuseum:latest
+2020-07-05T04:53:35.605Z        DEBUG   Fetching chart list from storage        {"repo": ""}
+2020-07-05T04:53:35.647Z        DEBUG   No change detected between cache and storage    {"repo": ""}
+2020-07-05T04:53:35.647Z        INFO    Starting ChartMuseum    {"port": 8080}
+2020-07-05T04:53:58.448Z        DEBUG   [1] Incoming request: / {"reqID": "0f498614-dff3-41f7-9c17-5c08db577318"}
+2020-07-05T04:53:58.449Z        INFO    [1] Request served      {"path": "/", "comment": "", "clientIP": "172.17.0.1", "method": "GET", "statusCode": 200, "latency":
+```
+
+Next place index.yaml and tgz files in dedicated folder:
+![chartmuseum-files.png](images/chartmuseum-files.png)
+
+Next available charts can be viewed here:
+![chartmuseum-get.png](images/chartmuseum-get.png)
+
 ## Configuring helm client to work with repositories
 
 Helm maintains a list of repositories. Sample execution:
@@ -1660,7 +1686,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 ```
 
 # Using existing helm chart
-
+TBD
 
 # links
 https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/exercise-files   
