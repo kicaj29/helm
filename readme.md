@@ -512,8 +512,10 @@ This chart solves problem that occurred in chart 5 - incorrect connection string
 [chart7](charts/chart7-DEV-and-TEST-environment/chart/guestbook)
 
 Some important points:
-* This chart shows how to generate app URL based on release name.
-* It contains one ingress definition.
+* This chart shows how to generate app URL based on release name.   
+  [ingress.yaml](/charts/chart7-DEV-and-TEST-environment/chart/guestbook/templates/ingress.yaml) by setting host in this way: ```host: {{ $.Release.Name }}.{{ .host.domain }}```
+* It contains one ingress definition.   
+  [ingress.yaml](/charts/chart7-DEV-and-TEST-environment/chart/guestbook/templates/ingress.yaml) - if needed we can enable ingress.yaml for frontend and backend in [values.yaml](/charts/chart7-DEV-and-TEST-environment/chart/guestbook/values.yaml).
 * This chart contains example how to [iterate through array](charts/chart7-DEV-and-TEST-environment/chart/guestbook/templates/ingress.yaml).
 * It shows how to override values from values.yaml by parent chart (sections backend and frontend from [values.yaml](charts/chart7-DEV-and-TEST-environment/chart/guestbook/values.yaml))
 
