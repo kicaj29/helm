@@ -299,7 +299,7 @@ helm template [chart]
 
 ### Dynamic
 ```
-helm install [release] [chart] --debug -dry-run
+helm install [release] [chart] --debug --dry-run
 ```
 - real helm install but without commit
 - can generate a release-name
