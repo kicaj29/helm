@@ -532,9 +532,9 @@ helm install test guestbook --set frontend.config.guestbook_name=TEST
 
 Sample execution:
 ```
-PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install dev guestbook --set frontend.config.guestbook_name=DEV
+PS D:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install dev guestbook --set frontend.config.guestbook_name=DEV
 NAME: dev
-LAST DEPLOYED: Fri Jul  3 21:14:48 2020
+LAST DEPLOYED: Wed Sep 23 15:10:40 2020
 NAMESPACE: default
 STATUS: deployed
 REVISION: 1
@@ -547,9 +547,9 @@ You can access the Guestbook application at the following urls :
   http://dev.frontend.local
   http://dev.backend.local
 Have fun !
-PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install test guestbook --set frontend.config.guestbook_name=TEST
+PS D:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install test guestbook --set frontend.config.guestbook_name=TEST
 NAME: test
-LAST DEPLOYED: Fri Jul  3 21:14:59 2020
+LAST DEPLOYED: Wed Sep 23 15:18:14 2020
 NAMESPACE: default
 STATUS: deployed
 REVISION: 1
@@ -562,38 +562,45 @@ You can access the Guestbook application at the following urls :
   http://test.frontend.local
   http://test.backend.local
 Have fun !
-PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> kubectl get pods
-NAME                                                        READY   STATUS    RESTARTS   AGE
-dev-backend-78995fd9f5-gcn4c                                0/1     Error     2          41s
-dev-database-86587b7845-8vrwq                               1/1     Running   0          41s
-dev-frontend-749bd48bcf-hkjfz                               1/1     Running   0          41s
-ingress-release-ingress-nginx-controller-784ffc969d-gtqzh   1/1     Running   0          15d
-test-backend-5b7cbcd488-zdhz8                               1/1     Running   1          30s
-test-database-69d589bc8-kq9hh                               1/1     Running   0          30s
-test-frontend-869cfcd845-hpl6t                              1/1     Running   0          30s
-PS C:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart>
+PS D:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> kubectl get pods
+NAME                                                       READY   STATUS    RESTARTS   AGE
+dev-backend-78995fd9f5-8kqx9                               1/1     Running   2          9m48s
+dev-database-86587b7845-v76w8                              1/1     Running   0          9m48s
+dev-frontend-749bd48bcf-6n7xt                              1/1     Running   0          9m48s
+release-ingress-ingress-nginx-controller-c6bb978f7-gwvxt   1/1     Running   0          6h1m
+test-backend-5b7cbcd488-pl8pt                              1/1     Running   2          2m14s
+test-database-69d589bc8-r8q7m                              1/1     Running   0          2m14s
+test-frontend-869cfcd845-rn7mc                             1/1     Running   0          2m14s
 ```
-> :warning: From some reason there is an issue with backend pod from DEV env. There was raised question about it: https://disqus.com/by/disqus_pJ1gDaYRml/
 
-Error from the dev backend pod:
+>NOTE: if some pods will start crashing increase CPU and memory assigned to docker engine in docker desktop settings.
 
-```ps
-Guestbook API listening on port 3000!
-/home/node/app/node_modules/mongodb/lib/topologies/server.js:240
-            throw err;
-            ^
+We can also experiment and enable ingress also for frontend and backend. Then frontend app  will be available from 2 DNS names:
 
-MongoError: Authentication failed.
-    at Function._getError (/home/node/app/node_modules/mongodb-core/lib/auth/scram.js:125:14)
-    at sendAuthCommand (/home/node/app/node_modules/mongodb-core/lib/auth/scram.js:175:31)
-    at Connection.messageHandler (/home/node/app/node_modules/mongodb-core/lib/connection/connect.js:334:5)
-    at emitTwo (events.js:126:13)
-    at Connection.emit (events.js:214:7)
-    at processMessage (/home/node/app/node_modules/mongodb-core/lib/connection/connection.js:364:10)
-    at Socket.<anonymous> (/home/node/app/node_modules/mongodb-core/lib/connection/connection.js:533:15)
-    at emitOne (events.js:116:13)
-    at Socket.emit (events.js:211:7)
 ```
+PS D:\GitHub\kicaj29\helm\charts\chart7-DEV-and-TEST-environment\chart> helm install test1 guestbook --set frontend.config.guestbook_name=TEST1
+NAME: test1
+LAST DEPLOYED: Wed Sep 23 15:22:34 2020
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Congratulations ! You installed guestbook chart sucessfully.
+Release name is test1
+
+You can access the Guestbook application at the following urls :
+  http://test1.frontend.local
+  http://test1.backend.local
+Have fun !
+```
+
+```
+http://test1.frontend.local
+http://frontend.local/
+```
+Address ```http://frontend.local/``` is not mentioned in 
+[NOTES.txt](charts\chart7-DEV-and-TEST-environment\chart\guestbook\templates\NOTES.txt) that`s why it is not listed in the ```helm install``` output.
 
 # Managing dependencies
 ## Packaging charts
